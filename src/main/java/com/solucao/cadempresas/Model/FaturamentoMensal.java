@@ -1,15 +1,39 @@
 package com.solucao.cadempresas.Model;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class FaturamentoMensal {
+    @jakarta.persistence.Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long Id;
+    @ManyToOne
+    @JoinColumn(name = "empresa_id")
     private Empresa empresa;
-    private LocalDate mesAno;
+    private String mes;
+    private String ano; 
     private BigDecimal faturamento;
+
+
+    
+    public String getMes() {
+        return mes;
+    }
+    public void setMes(String mes) {
+        this.mes = mes;
+    }
+    public String getAno() {
+        return ano;
+    }
+    public void setAno(String ano) {
+        this.ano = ano;
+    }
  
  
  
@@ -20,12 +44,7 @@ public class FaturamentoMensal {
     public void setEmpresa(Empresa empresa) {
         this.empresa = empresa;
     }
-    public LocalDate getMes() {
-        return mesAno;
-    }
-    public void setMes(LocalDate mesAno) {
-        this.mesAno = mesAno;
-    }
+    
     public BigDecimal getFaturamento() {
         return faturamento;
     }

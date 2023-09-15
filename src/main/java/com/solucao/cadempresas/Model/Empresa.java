@@ -1,12 +1,23 @@
 package com.solucao.cadempresas.Model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Empresa {
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String CNPJ;
     private String RazaoSocial;
     private String Nome_Fantasia;
@@ -14,6 +25,10 @@ public class Empresa {
     private int tempoAtu;
     private BigDecimal CapitalSocial;
     private int qtdFuncCLT;
+    @OneToMany(mappedBy = "empresa",fetch = FetchType.EAGER   ,cascade = CascadeType.ALL)
+    private List<FaturamentoMensal> fatura;
+    @OneToOne
+    private Empresario empresario;
     private int qtdFunc3;
     private int Estagirs;
     private int NSocio;
@@ -25,10 +40,37 @@ public class Empresa {
     private String Linkedin;  
     private String Whats;
     private String email;
+    
+    
+    
 
 
+    
+    public Empresa() {
+        this.fatura = new ArrayList<>();
+    }
 
+    public Empresario getEmpresario() {
+        return empresario;
+    }
 
+    public void setEmpresario(Empresario empresario) {
+        this.empresario = empresario;
+    }
+    public List<FaturamentoMensal> getFatura() {
+        return fatura;
+    }
+
+    public void setFatura(List<FaturamentoMensal> fatura) {
+        this.fatura = fatura;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+  
+    public Long getId() {
+        return id;
+    }
     public String getCNPJ() {
         return CNPJ;
     }
