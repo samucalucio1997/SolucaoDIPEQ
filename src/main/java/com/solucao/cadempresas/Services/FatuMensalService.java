@@ -1,5 +1,6 @@
 package com.solucao.cadempresas.Services;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,8 +39,12 @@ public class FatuMensalService implements FatuMensalIM{
         }
         List<FaturamentoMensal> faturamentos = emp.get().getFatura();
         faturamentos.add(fatura);
-        empresaRepo.save(emp.get());
+        fatura.setEmpresa(empresa);
         return invoicing.save(fatura)!=null;
+    }
+
+    public List<BigDecimal> pegarUltimosAnos(Long empresaId){
+        return invoicing.Encontra(empresaId);//empresaRepo.findAll()
     }
     
 }

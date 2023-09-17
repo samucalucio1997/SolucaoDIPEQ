@@ -1,6 +1,8 @@
 package com.solucao.cadempresas.Controller;
 
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,7 @@ public class Main {
      
     @Autowired
     private FatuMensalService faturaMens;
+
     
     private Empresario empdor;
 
@@ -49,28 +52,42 @@ public class Main {
          return empresar;
     }
     @GetMapping("/Auth")
-    public ResponseEntity<Boolean> Autentica(@RequestHeader String login,@RequestHeader String senha){
+    public ResponseEntity<Boolean> Autentica(@RequestHeader String login,
+    @RequestHeader String senha){
            empdor = SeviceEmpres.Autentica(login, senha);
-           empre =emprepo.findAll().stream()
-           .filter(n->n.getEmpresario().equals(empdor)).findFirst().get();
+           if(emprepo.findAll().size()!=0){
+               empre =emprepo.findAll().stream()
+               .filter(n->n.getEmpresario().equals(empdor)).findFirst().get();
+           }
            return ResponseEntity.ok(empdor!=null);
     }
     
     @PostMapping(value = "/cadastroEm", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Empresa CadastraEstabeleci(@RequestBody Empresa empresa){
-        Empresa em=null;
+        Empresa em;
+        System.out.println(empdor.getLogin() + " "+ empdor.getSenha());
         if(empdor!=null){
             em =  empresaService.CadastraEM(empresa, empdor);
             empre = em;
+            return em;
         }
-        return em;
+        else{
+            return null; 
+        }
     }
  
     @PostMapping(value="/Fatura", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> Fatura(@RequestBody FaturamentoMensal fatura){
+        System.out.println(empre.getCNPJ());
         return ResponseEntity.ok(faturaMens.CadastraFatura(fatura, empre));
     } 
-     
+    
+    @GetMapping("/FaturaAnual")
+    public List<BigDecimal> faturamentoAnual(){
+        List<BigDecimal> res = faturaMens.pegarUltimosAnos(empre.getId());
+
+        return res.stream().limit(3).toList();
+    }
     
 
 }
