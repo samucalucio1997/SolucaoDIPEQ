@@ -61,6 +61,9 @@ public class Main {
            }
            return ResponseEntity.ok(empdor!=null);
     }
+
+
+
     
     @PostMapping(value = "/cadastroEm", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Empresa CadastraEstabeleci(@RequestBody Empresa empresa){
@@ -84,9 +87,14 @@ public class Main {
     
     @GetMapping("/FaturaAnual")
     public List<BigDecimal> faturamentoAnual(){
-        List<BigDecimal> res = faturaMens.pegarUltimosAnos(empre.getId());
+        List<BigDecimal> res = faturaMens.pegarUltimosMeses(empre.getId());
 
         return res.stream().limit(3).toList();
+    }
+    @GetMapping("/FatuAnuais")
+    public List<BigDecimal> faturamentoAnualS(){
+        List<BigDecimal> fatMensal = faturaMens.pegarUltimos3Anos(empre.getId());
+        return fatMensal;
     }
     
 
