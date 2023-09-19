@@ -87,13 +87,15 @@ public class Main {
     
     @GetMapping("/FaturaAnual")
     public List<BigDecimal> faturamentoAnual(){
-        List<BigDecimal> res = faturaMens.pegarUltimosMeses(empre.getId());
+        return 
+         faturaMens.pegarUltimosMeses(empre);
 
-        return res.stream().limit(3).toList();
     }
+
+
     @GetMapping("/FatuAnuais")
     public List<BigDecimal> faturamentoAnualS(){
-        List<BigDecimal> fatMensal = faturaMens.pegarUltimos3Anos(empre.getId());
+        List<BigDecimal> fatMensal = faturaMens.pegarUltimos3Anos(empre);
         return fatMensal;
     }
     
