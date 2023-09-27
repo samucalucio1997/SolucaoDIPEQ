@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -49,19 +50,17 @@ public class FatuMensalService implements FatuMensalIM{
         return invoicing.save(fatura)!=null;
     }
     
-    public List<BigDecimal> pegarUltimosMeses(Empresa empresaId){
+    public List<FaturamentoMensal> pegarUltimosMeses(Empresa empresaId){
         List<FaturamentoMensal> ultimos;
-        ultimos = invoicing.findAll().stream()
-        .filter(n->n.getAno().equals("2021")&&n.getEmpresa().getId()==
-        empresaId.getId()).toList();
-        if(ultimos.size()>=3){
-            ultimos= ultimos.subList(ultimos.size()-3, ultimos.size());
-        }
-        List<BigDecimal> mesesFat = new ArrayList<>();
-        for (FaturamentoMensal bigDecimal : ultimos) {
-            mesesFat.add(bigDecimal.getFaturamento());
-        }
-        return mesesFat;
+        ultimos = invoicing.findAll().stream().filter(n->n.getEmpresa().getId().equals(empresaId.getId())).toList();
+
+        // Collections.sort(ultimos, new Comparator<FaturamentoMensal>() {
+        //     @Override
+        //     public int compare(FaturamentoMensal arg0, FaturamentoMensal arg1) {
+        //          return arg0.getMes().compareTo(arg1.getMes());
+        //     }            
+        // });
+        return ultimos.subList(ultimos.size()-3, ultimos.size());
     }
 
     public List<BigDecimal> pegarUltimos3Anos(Empresa empresaId){

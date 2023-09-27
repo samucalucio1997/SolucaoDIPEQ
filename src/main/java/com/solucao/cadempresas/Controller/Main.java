@@ -2,6 +2,7 @@ package com.solucao.cadempresas.Controller;
 
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -87,9 +88,12 @@ public class Main {
     
     @GetMapping("/FaturaAnual")
     public List<BigDecimal> faturamentoAnual(){
-        return 
-         faturaMens.pegarUltimosMeses(empre);
-
+       List<FaturamentoMensal> ref= faturaMens.pegarUltimosMeses(empre);
+       List<BigDecimal> ho = new ArrayList<>();
+       for (FaturamentoMensal bigDecimal : ref) {
+         ho.add(bigDecimal.getFaturamento());
+       } 
+       return ho;
     }
 
 
