@@ -1,5 +1,6 @@
 package com.solucao.cadempresas.Services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,21 +17,16 @@ public class EmpresarioService implements EmpresarioIM {
 
 
     @Override
-    public Empresario Autentica(String login, String senha) {
-        // TODO Auto-generated method stub
-        Optional<Empresario> empresario = empreRep
-        .findAll()
-        .stream()
-        .filter(n -> n.getLogin().equals(login) && n.getSenha().equals(senha))
-        .findFirst();
-        if (empresario.isPresent()) {
-            System.out.println("Usuário autenticado: " + empresario.get().getLogin());
-            return empresario.get();
-        } else {
-            System.out.println("Usuário não encontrado para login: " + login);
-            return null;
-        }
-    }// chama o método para depois cadastrar uma empresa
+public Empresario Autentica(String login, String senha) {
+    List<Empresario> empresarioOptional = empreRep
+            .findAll()
+            .stream()
+            .filter(n -> n.getLogin().equals(login) 
+            && n.getSenha().equals(senha))
+            .toList();
+    
+    return empresarioOptional.get(0);
+}// chama o método para depois cadastrar uma empresa
 
     @Override
     public ResponseEntity<Empresario> cadastrar(String login, String senha) {
