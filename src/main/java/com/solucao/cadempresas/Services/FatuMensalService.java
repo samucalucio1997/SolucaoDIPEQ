@@ -52,6 +52,11 @@ public class FatuMensalService implements FatuMensalIM{
     
     public List<FaturamentoMensal> pegarUltimosMeses(Empresa empresaId){
         List<FaturamentoMensal> ultimos;
+        if(empresaId==null){
+            System.out.println("Não há empresa cadastrada");
+            ultimos = new ArrayList<>();
+            return ultimos;
+        }
         ultimos = invoicing.findAll().stream().filter(n->n.getEmpresa().getId().equals(empresaId.getId())).toList();
 
         // Collections.sort(ultimos, new Comparator<FaturamentoMensal>() {

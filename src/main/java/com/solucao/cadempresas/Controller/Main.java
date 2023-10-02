@@ -53,14 +53,15 @@ public class Main {
          return empresar;
     }
     @GetMapping("/Auth")
-    public ResponseEntity<Boolean> Autentica(@RequestHeader String login,
+    public ResponseEntity<Empresario> Autentica(@RequestHeader String login,
     @RequestHeader String senha){
-           empdor = SeviceEmpres.Autentica(login, senha);
+        empdor =SeviceEmpres.Autentica(login, senha);
+        System.out.println(empdor.getSenha());
            if(emprepo.findAll().size()!=0){
                empre =emprepo.findAll().stream()
                .filter(n->n.getEmpresario().equals(empdor)).findFirst().get();
            }
-           return ResponseEntity.ok(empdor!=null);
+           return ResponseEntity.ok(empdor);
     }
 
 
@@ -87,13 +88,13 @@ public class Main {
     } 
     
     @GetMapping("/FaturaAnual")
-    public List<BigDecimal> faturamentoAnual(){
+    public List<FaturamentoMensal> faturamentoAnual(){
        List<FaturamentoMensal> ref= faturaMens.pegarUltimosMeses(empre);
-       List<BigDecimal> ho = new ArrayList<>();
-       for (FaturamentoMensal bigDecimal : ref) {
-         ho.add(bigDecimal.getFaturamento());
-       } 
-       return ho;
+    //    List<BigDecimal> ho = new ArrayList<>();
+    //    for (FaturamentoMensal bigDecimal : ref) {
+    //      ho.add(bigDecimal.getFaturamento());
+    //    } 
+       return ref;
     }
 
 
