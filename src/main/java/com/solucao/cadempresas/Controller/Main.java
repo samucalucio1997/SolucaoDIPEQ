@@ -103,6 +103,11 @@ public class Main {
         List<BigDecimal> fatMensal = faturaMens.pegarUltimos3Anos(empre);
         return fatMensal;
     }
+     
+    @GetMapping("/Grafith")
+    public List<FaturamentoMensal> Grafico(){
+        return faturaMens.TotalForGrafic(empre);
+    }
     
 
 }

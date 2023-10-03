@@ -57,7 +57,8 @@ public class FatuMensalService implements FatuMensalIM{
             ultimos = new ArrayList<>();
             return ultimos;
         }
-        ultimos = invoicing.findAll().stream().filter(n->n.getEmpresa().getId().equals(empresaId.getId())).toList();
+        ultimos = invoicing.findAll().stream().filter(n->n.getEmpresa()
+        .getId().equals(empresaId.getId())).toList();
 
         // Collections.sort(ultimos, new Comparator<FaturamentoMensal>() {
         //     @Override
@@ -107,6 +108,11 @@ public class FatuMensalService implements FatuMensalIM{
            
         }
         return novList;
+    }
+
+    public List<FaturamentoMensal> TotalForGrafic(Empresa emp){
+        return invoicing.findAll().stream().filter(n->n.getEmpresa().getId()
+        .equals(emp.getId())).toList();
     }
     
 }

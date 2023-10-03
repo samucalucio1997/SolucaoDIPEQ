@@ -2,6 +2,8 @@ package com.solucao.cadempresas.Model;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,6 +17,7 @@ public class FaturamentoMensal {
     private Long Id;
     @ManyToOne
     @JoinColumn(name = "empresa_id")
+    @JsonIgnore
     private Empresa empresa;
     private String mes;
     private String ano; 
