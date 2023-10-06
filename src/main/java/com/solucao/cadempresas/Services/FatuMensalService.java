@@ -70,8 +70,13 @@ public class FatuMensalService implements FatuMensalIM{
     }
 
     public List<BigDecimal> pegarUltimos3Anos(Empresa empresaId){
-        List<FaturamentoMensal> Anual = invoicing.findAll().stream()
+        List<FaturamentoMensal> Anual ;
+        if(empresaId!=null){
+            Anual = invoicing.findAll().stream()
         .filter(n->n.getEmpresa().getId().equals(empresaId.getId())).toList();
+        }else{
+            Anual = new ArrayList<>();
+        }
         // if(Anual!=null){
         //     Collections.sort(Anual, new Comparator<FaturamentoMensal>() {
         //         @Override
@@ -85,29 +90,31 @@ public class FatuMensalService implements FatuMensalIM{
         //     throw new RuntimeException("lista vazia");
         // }
         List<BigDecimal> novList = new ArrayList<>();
-        int c=Anual.size();
-        BigDecimal sum= BigDecimal.ZERO;
-        int k =Integer.parseInt(Anual.get(0).getAno());
-        for (FaturamentoMensal fat : Anual) {
-           String m = Integer.toString(k);
-        //    System.out.println(fat.getAno() + " " + m);
-           if(fat.getAno().equals(m)){
-            //   System.out.println(fat.getAno()); 
-              sum = sum.add(fat.getFaturamento());
-              c--;
-              if(c==1){
-                // System.out.println(sum.doubleValue());
-                novList.add(sum); 
-              }
-              continue;
+    
+        if(Anual.size()!=0){
+            int c=Anual.size();
+            BigDecimal sum= BigDecimal.ZERO;
+            int k =Integer.parseInt(Anual.get(0).getAno());
+                for (FaturamentoMensal fat : Anual) {
+                   String m = Integer.toString(k);
+                //  System.out.println(fat.getAno() + " " + m);
+                   if(fat.getAno().equals(m)){
+                //  System.out.println(fat.getAno()); 
+                      sum = sum.add(fat.getFaturamento());
+                      c--;
+                      if(c==1){
+                        // System.out.println(sum.doubleValue());
+                        novList.add(sum); 
+                      }
+                      continue;
+                    }
+                    // System.out.println(sum.doubleValue());
+                    novList.add(sum); 
+                    k++;
+                    sum = BigDecimal.ZERO;
+                }
             }
-            // System.out.println(sum.doubleValue());
-            novList.add(sum); 
-            k++;
-            sum = BigDecimal.ZERO;
-           
-        }
-        return novList;
+            return novList;
     }
 
     public List<FaturamentoMensal> TotalForGrafic(Empresa emp){

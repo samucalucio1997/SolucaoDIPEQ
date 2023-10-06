@@ -4,7 +4,10 @@ package com.solucao.cadempresas.Controller;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import javax.management.RuntimeErrorException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,6 +23,7 @@ import com.solucao.cadempresas.Model.Empresa;
 import com.solucao.cadempresas.Model.Empresario;
 import com.solucao.cadempresas.Model.FaturamentoMensal;
 import com.solucao.cadempresas.Repository.EmpresaRepo;
+import com.solucao.cadempresas.Repository.EmpresarioRepo;
 import com.solucao.cadempresas.Services.EmpresaService;
 import com.solucao.cadempresas.Services.EmpresarioService;
 import com.solucao.cadempresas.Services.FatuMensalService;
@@ -32,6 +36,9 @@ public class Main {
 
     @Autowired
     private EmpresaRepo emprepo;
+
+    @Autowired
+    private EmpresarioRepo empresarios;
 
 
     @Autowired
@@ -53,15 +60,29 @@ public class Main {
          return empresar;
     }
     @GetMapping("/Auth")
-    public ResponseEntity<Empresario> Autentica(@RequestHeader String login,
+    public ResponseEntity<Boolean> Autentica(@RequestHeader String login,
     @RequestHeader String senha){
         empdor =SeviceEmpres.Autentica(login, senha);
-        System.out.println(empdor.getSenha());
-           if(emprepo.findAll().size()!=0){
-               empre =emprepo.findAll().stream()
-               .filter(n->n.getEmpresario().equals(empdor)).findFirst().get();
-           }
-           return ResponseEntity.ok(empdor);
+  
+    //        if(empresarios.findAll().stream().filter(n -> n.getId()
+    //        .equals(empdor.getId())).findFirst()!=null&&emprepo.findAll()
+    //        .stream().filter(n -> n.getEmpresario().getId().equals(empdor.getId())).findFirst().isEmpty()){
+    //            empre =emprepo.findAll().stream()
+    //            .filter(n->n.getEmpresario()
+    //            .equals(empdor)).findFirst().get();
+    // }
+    // List<Empresa> empre =  emprepo.findAll(); 
+    List<Empresa> empresas = emprepo.findAll();
+    for (Empresa empresa : empresas) {
+        if(empresa.getEmpresario().getId().equals(empdor.getId())){
+            System.out.println("empresario");
+            empre = empresa;
+        }else{
+            System.out.println("nada");
+        }
+    }
+    //  empre = emprepo.findById( 3L).get();
+    return ResponseEntity.ok(empdor!=null);
     }
 
 
@@ -101,7 +122,11 @@ public class Main {
     @GetMapping("/FatuAnuais")
     public List<BigDecimal> faturamentoAnualS(){
         List<BigDecimal> fatMensal = faturaMens.pegarUltimos3Anos(empre);
-        return fatMensal;
+        if(fatMensal!=null){
+            return fatMensal;
+        }else{
+            return null;
+        }
     }
      
     @GetMapping("/Grafith")

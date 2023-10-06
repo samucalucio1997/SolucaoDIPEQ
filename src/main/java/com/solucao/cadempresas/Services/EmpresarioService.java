@@ -18,13 +18,10 @@ public class EmpresarioService implements EmpresarioIM {
 
     @Override
 public Empresario Autentica(String login, String senha) {
-    Empresario obj = new Empresario();
-    obj.setLogin(login);
-    obj.setSenha(senha);
-    Optional <Empresario> empresario = empreRep.findAll().stream().filter(n -> n.getLogin().equals(login)
+    Optional <Empresario> empresario = empreRep.findAll()
+    .stream().filter(n -> n.getLogin().equals(login)
     &&n.getSenha().equals(senha)).findFirst();
-    Long idEmp = empresario.get().getId();
-    return empreRep.findById(idEmp).get();
+    return empreRep.findById(empresario.get().getId()).get();
 }// chama o método para depois cadastrar uma empresa
 
     @Override
