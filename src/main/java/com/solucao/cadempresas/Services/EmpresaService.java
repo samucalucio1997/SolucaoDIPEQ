@@ -1,5 +1,6 @@
 package com.solucao.cadempresas.Services;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,14 @@ public class EmpresaService implements EmpresaIM{
         }
             // empresarioRepo.findById(empresa.getEmpresario().getId());
             // empresarioRepo.save(empr);
-            Long id = empresaRepo.findAll().stream().filter(n->n.getCNPJ().
+            Long id = empresaRepo.findAll().stream()
+            .filter(n->n.getCNPJ().
             equals(empresa.getCNPJ())).findFirst().get().getId();
             if(id!=null){
                 System.out.println(id);
                 empresaRepo.findById(id);
+            }else{
+                throw new NoSuchElementException("Não há um id para esse empresario");
             }
         
         return empresaRepo.save(empresa);   

@@ -9,6 +9,6 @@ import com.solucao.cadempresas.Model.Empresa;
 
 public interface EmpresaRepo extends JpaRepository<Empresa,Long> {
     
-     @Query(value = "SELECT cnpj FROM empresa WHERE empresario_id=?1", nativeQuery = true)
+    @Query(value = "SELECT cnpj FROM empresa WHERE empresario_id=?1", nativeQuery = true)
     List<Empresa> consultarDadosNativos(Long id);
 }
