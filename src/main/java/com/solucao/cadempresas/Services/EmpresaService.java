@@ -19,23 +19,35 @@ public class EmpresaService implements EmpresaIM{
     @Autowired
     private EmpresarioRepo empresarioRepo;
 
+    public Empresa Consulta(Empresario empresario){
+        Optional <Empresa> emp;
+        emp = empresaRepo.findAll().stream().filter(n -> n.getEmpresario().getId().equals(empresario.getId())).findFirst();
+        if(emp.isPresent()){
+            return emp.get();
+        }else{
+            throw new RuntimeException("Não foi encontrado");
+        }
+    }
+
     @Override
     public Empresa CadastraEM(Empresa empresa, Empresario empr) {
         // TODO Auto-generated method stub
         if(empresa.getEmpresario()==null){
             empresa.setEmpresario(empr); 
         }
-            // empresarioRepo.findById(empresa.getEmpresario().getId());
-            // empresarioRepo.save(empr);
-            Long id = empresaRepo.findAll().stream()
-            .filter(n->n.getCNPJ().
-            equals(empresa.getCNPJ())).findFirst().get().getId();
-            if(id!=null){
-                System.out.println(id);
-                empresaRepo.findById(id);
-            }else{
-                throw new NoSuchElementException("Não há um id para esse empresario");
-            }
+            // if(empresa.getEmpresario().getId().equals(empr.getId())){
+            //     Long id = empresaRepo.findAll().stream()
+            //     .filter(n->n.getCNPJ().
+            //     equals(empresa.getCNPJ()))
+            //     .findFirst()
+            //     .orElseThrow().getId();
+            //     if(id!=null){
+            //         System.out.println(id);
+            //         empresaRepo.findById(id);
+            //     }else{
+            //         throw new NoSuchElementException("Não há um id para esse empresario");
+            //     }
+            // }
         
         return empresaRepo.save(empresa);   
     }

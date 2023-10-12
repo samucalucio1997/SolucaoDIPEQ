@@ -59,6 +59,12 @@ public class Main {
          empdor =empresario;
          return empresar;
     }
+    @GetMapping("/empresaCons")
+    public Empresa Teste(){
+        // empresaService.Consulta(empdor);
+      return empre; 
+    }
+
     @GetMapping("/Auth")
     public ResponseEntity<Boolean> Autentica(@RequestHeader String login,
     @RequestHeader String senha){
@@ -111,10 +117,6 @@ public class Main {
     @GetMapping("/FaturaAnual")
     public List<FaturamentoMensal> faturamentoAnual(){
        List<FaturamentoMensal> ref= faturaMens.pegarUltimosMeses(empre);
-    //    List<BigDecimal> ho = new ArrayList<>();
-    //    for (FaturamentoMensal bigDecimal : ref) {
-    //      ho.add(bigDecimal.getFaturamento());
-    //    } 
        return ref;
     }
 
